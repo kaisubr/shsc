@@ -80,7 +80,7 @@ def readReference():
         response = entry.post('https://sheet.host/account/login', headers=headers, cookies=None, data=data) 
         
         if response and "Invalid" in response.html.text:
-            console.log(response.html.find(".alert-error", first=True).text)
+            print(response.html.find(".alert-error", first=True).text)
             return 
         
         with open(LOG, "a") as logfile:
