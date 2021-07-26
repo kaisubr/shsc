@@ -8,10 +8,10 @@ import os, os.path
 
 # os.system("clear") 
 # https://pypi.org/project/requests-html/ 
-USERNAME = "?"
-PASSWORD = "?"
+USERNAME = "bfuf6cqty2"
+PASSWORD = "bfuf6cqty2"
 REF = "links.out"
-LOG = "download.log"
+LOG = "debug.log"
 SAMPLE = "https://python.org"
 INI = "https://sheet.host/category/anime"
 INIHOST = INI.split("//")[1].split("/")[0]
