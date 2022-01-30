@@ -97,7 +97,7 @@ def readReference():
                 endl = link.split("sheet.host/")[-1] # sheet/Zn5BR7, don't want '/' prior to 'sheet'
                 dldir = endl + "/"
                 
-                if not os.path.isdir(dldir) and "sheet" in endl: 
+                if not os.path.isdir(dldir) and "sheet" in endl:
                     os.makedirs(dldir) 
                 elif os.path.isdir(dldir) and OVERWRITE and "sheet" in endl:
                     print("OVERWRITE", dldir, "as it exists", file=logfile)
@@ -114,14 +114,22 @@ def readReference():
                     ul = response.html.find(".sheet-download > .nav-list", first=True) 
                     items = ul.find("li") 
                     cin = 0
-                    for li in items: 
-                        cin += 1
-                        name, where = li.find("a", first=True).text, list(li.find("a", first=True).absolute_links)[0] 
+                    from collections import defaultdict
+                    retrieve = defaultdict(lambda: None) # retrieve = set()
+
+                    for li in items:
+                        name, where = li.find("a", first=True).text.split("\n")[0], list(li.find("a", first=True).absolute_links)
+                        where = [k for k in where if "download" in k or "expires" in k or "signature" in k]
                         # "at", where[0:min(15, len(where))] + "..."
-                        tqdm.write("> " + str(count) + "/" + str(info["size"]) + " pt. " + str(cin) + "/" + str(len(items)) + "\t" + name)
-                        save_name = name[0:name.rfind("(")].replace(" ", "") 
-                        with open(dldir + name[0:name.rfind("(")].replace(" ", ""), "wb") as save: 
-                            save.write(entry.get(where).content) 
+                        if len(where) > 0:
+                            retrieve[name] = where[0] # retrieve.update(where)
+
+                    for name, place in retrieve.items():
+                        cin += 1
+                        tqdm.write("> " + str(count) + "/" + str(info["size"]) + " pt. " + str(cin) + "/" + str(len(retrieve)) + "\t" + name)
+                        save_name = name[0:name.rfind("(")].replace(" ", "")
+                        with open(dldir + name[0:name.rfind("(")].replace(" ", ""), "wb") as save:
+                            save.write(entry.get(place).content)
                 except BaseException as e: 
                     print("Error,", e, file=logfile) 
                 
