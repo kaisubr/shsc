@@ -1,0 +1,5 @@
+*.out
+*.log
+*.where.txt
+sheet/*
+*.old.py

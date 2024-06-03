@@ -1,0 +1,9 @@
+# about
+Pulls content from sheet.host, scraped for https://github.com/ACM-Research/music-generation research project.
+
+# usage
+Usage requires requests_html as well as a valid sheet.host account (USERNAME and PASSWORD).
+
+```bash
+python sheethost.py
+```
